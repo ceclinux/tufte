@@ -1,4 +1,4 @@
 # GitHub Pages deployment settings.
 # Local development uses _config.yml; the Actions workflow merges this file.
-url: "https://ceclinux.github.io"
-baseurl: "/tufte"
+url: "https://notes.ceclinux.org"
+baseurl: ""
