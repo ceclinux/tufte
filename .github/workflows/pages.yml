@@ -27,6 +27,9 @@ jobs:
           ruby-version: '3.4'
           bundler-cache: true
 
+      - name: Setup Pandoc
+        uses: r-lib/actions/setup-pandoc@v2
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

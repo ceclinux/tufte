@@ -41,7 +41,7 @@ markdown: Pandoc
 pandoc:
   extensions:
     - from: 'markdown+tex_math_single_backslash'
-    - filter: 'pandoc-sidenote'
+    - lua_filter: 'pandoc-sidenote.lua'
 
 giscus:
   enabled: true
