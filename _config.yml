@@ -35,6 +35,28 @@ gems:
   - jekyll-pandoc
 plugins:
   - jekyll-feed
+  - jekyll-compose
+
+markdown: Pandoc
+pandoc:
+  extensions:
+    - from: 'markdown+tex_math_single_backslash'
+    - filter: 'pandoc-sidenote'
+
+giscus:
+  enabled: true
+  repo: ceclinux/tufte
+  repo_id: R_kgDOSscCqA
+  category: General
+  category_id: DIC_kwDOSscCqM4C-NO9
+  theme: preferred_color_scheme
+  lang: en
+
+defaults:
+  - scope:
+      type: posts
+    values:
+      giscus: true
 
 # Exclude from processing.
 # The following items will not be processed, by default.
