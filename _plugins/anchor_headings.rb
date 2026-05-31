@@ -175,29 +175,55 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |document|
             }
           });
 
-          document.querySelectorAll(".header-anchor[aria-controls]").forEach((toggle) => {
-            const panel = document.getElementById(toggle.getAttribute("aria-controls"));
-            if (!panel) return;
+          const commentControls = Array.from(document.querySelectorAll(".header-anchor[aria-controls]"))
+            .map((toggle) => ({
+              toggle,
+              panel: document.getElementById(toggle.getAttribute("aria-controls"))
+            }))
+            .filter(({ panel }) => panel);
 
-            function showPanel() {
-              panel.hidden = false;
-              toggle.setAttribute("aria-expanded", "true");
-              loadGiscus(panel.querySelector(".giscus-section"));
-            }
+          function showPanel(toggle, panel) {
+            panel.hidden = false;
+            toggle.setAttribute("aria-expanded", "true");
+            loadGiscus(panel.querySelector(".giscus-section"));
+          }
 
-            function hidePanel() {
-              panel.hidden = true;
-              toggle.setAttribute("aria-expanded", "false");
-            }
+          function hidePanel(toggle, panel) {
+            panel.hidden = true;
+            toggle.setAttribute("aria-expanded", "false");
+          }
 
+          commentControls.forEach(({ toggle, panel }) => {
             toggle.addEventListener("click", (event) => {
               event.preventDefault();
               history.replaceState(undefined, document.title, toggle.getAttribute("href"));
-              if (panel.hidden) showPanel();
-              else hidePanel();
+              if (panel.hidden) showPanel(toggle, panel);
+              else hidePanel(toggle, panel);
             });
 
-            if (window.location.hash === toggle.getAttribute("href") || window.location.hash === `#${panel.id}`) showPanel();
+            if (window.location.hash === toggle.getAttribute("href") || window.location.hash === `#${panel.id}`) {
+              showPanel(toggle, panel);
+            }
+          });
+
+          function isTypingTarget(target) {
+            return target && (
+              target.isContentEditable ||
+              ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)
+            );
+          }
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key.toLowerCase() !== "c" || event.metaKey || event.ctrlKey || event.altKey || isTypingTarget(event.target)) {
+              return;
+            }
+
+            event.preventDefault();
+            const shouldShowAll = commentControls.some(({ panel }) => panel.hidden);
+            commentControls.forEach(({ toggle, panel }) => {
+              if (shouldShowAll) showPanel(toggle, panel);
+              else hidePanel(toggle, panel);
+            });
           });
         })();
       </script>
