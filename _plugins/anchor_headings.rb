@@ -56,11 +56,11 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |document|
     attrs = %(#{attrs} id="#{escaped_id}") unless attrs.include?(%(id="#{escaped_id}"))
 
     comments = ""
-    comments_toggle = ""
+    anchor_attrs = %(class="header-anchor" href="##{escaped_id}" aria-label="Link to this heading")
     if giscus_enabled
       term = "#{document.url}##{id}"
       comments_id = "comments-#{escaped_id}"
-      comments_toggle = %(<button class="section-comments-toggle" type="button" aria-expanded="false" aria-controls="#{comments_id}" aria-label="Discuss this section" title="Discuss this section">⊕</button>)
+      anchor_attrs = %(class="header-anchor" href="##{escaped_id}" aria-label="Link to this heading and discuss this section" aria-expanded="false" aria-controls="#{comments_id}" title="Discuss this section")
       comments = <<~HTML
         <aside class="section-comments" id="#{comments_id}" hidden>
           <p class="section-comments-title">Discuss this section</p>
@@ -69,7 +69,7 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |document|
       HTML
     end
 
-    %(<h#{level}#{attrs}>#{inner_html}<a class="header-anchor" href="##{escaped_id}" aria-label="Link to this heading">§</a>#{comments_toggle}</h#{level}>#{comments})
+    %(<h#{level}#{attrs}>#{inner_html}<a #{anchor_attrs}>§</a></h#{level}>#{comments})
   end
 
   if giscus_enabled
@@ -175,7 +175,7 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |document|
             }
           });
 
-          document.querySelectorAll(".section-comments-toggle").forEach((toggle) => {
+          document.querySelectorAll(".header-anchor[aria-controls]").forEach((toggle) => {
             const panel = document.getElementById(toggle.getAttribute("aria-controls"));
             if (!panel) return;
 
@@ -190,12 +190,14 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |document|
               toggle.setAttribute("aria-expanded", "false");
             }
 
-            toggle.addEventListener("click", () => {
+            toggle.addEventListener("click", (event) => {
+              event.preventDefault();
+              history.replaceState(undefined, document.title, toggle.getAttribute("href"));
               if (panel.hidden) showPanel();
               else hidePanel();
             });
 
-            if (window.location.hash === `#${panel.id}`) showPanel();
+            if (window.location.hash === toggle.getAttribute("href") || window.location.hash === `#${panel.id}`) showPanel();
           });
         })();
       </script>
