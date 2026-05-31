@@ -60,7 +60,7 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |document|
     if giscus_enabled
       term = "#{document.url}##{id}"
       comments_id = "comments-#{escaped_id}"
-      comments_toggle = %(<button class="section-comments-toggle" type="button" aria-expanded="false" aria-controls="#{comments_id}" title="Discuss this section">💬</button>)
+      comments_toggle = %(<button class="section-comments-toggle" type="button" aria-expanded="false" aria-controls="#{comments_id}" aria-label="Discuss this section" title="Discuss this section">⊕</button>)
       comments = <<~HTML
         <aside class="section-comments" id="#{comments_id}" hidden>
           <p class="section-comments-title">Discuss this section</p>
