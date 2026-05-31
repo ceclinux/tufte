@@ -33,8 +33,9 @@
   cursor: pointer;
   display: inline-block;
   font-family: inherit;
-  opacity: 0.55;
+  opacity: 0;
   position: relative;
+  transition: opacity 0.15s ease;
   text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8;
   top: -0.08em;
   vertical-align: baseline;
