@@ -52,8 +52,11 @@ jobs:
             --salt 963fafb15267e0aaa90454bd9d59dd7b \
             --short \
             --remember 30 \
+            --template _staticrypt/password_template.html \
             --template-title "Protected Notes" \
-            --template-instructions "Enter the password to read these notes."
+            --template-placeholder "Enter the shared phrase" \
+            --template-button "Open the notebook" \
+            --template-instructions "Enter the shared phrase to read these notes."
           rm -f _site/feed.xml
         env:
           STATICRYPT_PASSWORD: notesnotes
