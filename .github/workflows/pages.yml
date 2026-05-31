@@ -30,6 +30,11 @@ jobs:
       - name: Setup Pandoc
         uses: r-lib/actions/setup-pandoc@v2
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -37,6 +42,21 @@ jobs:
         run: bundle exec jekyll build --config _config.yml,_config_pages.yml
         env:
           JEKYLL_ENV: production
+
+      - name: Encrypt generated HTML
+        run: |
+          npx --yes staticrypt@3.5.4 _site/* \
+            --recursive \
+            --directory _site \
+            --config false \
+            --salt 963fafb15267e0aaa90454bd9d59dd7b \
+            --short \
+            --remember 30 \
+            --template-title "Protected Notes" \
+            --template-instructions "Enter the password to read these notes."
+          rm -f _site/feed.xml
+        env:
+          STATICRYPT_PASSWORD: notesnotes
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
