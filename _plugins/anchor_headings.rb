@@ -113,6 +113,10 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |document|
             return element ? element.content : "";
           }
 
+          function currentGiscusTheme() {
+            return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+          }
+
           function loadGiscus(container) {
             if (!container || container.dataset.giscusLoaded) return;
             container.dataset.giscusLoaded = "true";
@@ -120,7 +124,7 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |document|
             const params = new URLSearchParams({
               origin: cleanPageUrl,
               session: session,
-              theme: config.theme,
+              theme: currentGiscusTheme(),
               reactionsEnabled: "1",
               emitMetadata: "0",
               inputPosition: "top",
@@ -156,6 +160,13 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |document|
             link.href = `${giscusOrigin}/default.css`;
             document.head.prepend(link);
           }
+
+          window.addEventListener("notes-theme-change", (event) => {
+            const theme = event.detail && event.detail.theme ? event.detail.theme : currentGiscusTheme();
+            document.querySelectorAll(".giscus-frame").forEach((iframe) => {
+              iframe.contentWindow.postMessage({ giscus: { setConfig: { theme } } }, giscusOrigin);
+            });
+          });
 
           window.addEventListener("message", (event) => {
             if (event.origin !== giscusOrigin) return;

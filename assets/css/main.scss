@@ -11,6 +11,165 @@
   "pandoc-solarized"
 ;
 
+:root {
+  --tufte-paper: #fffff8;
+  --tufte-ink: #111111;
+  --tufte-muted: #5e5a50;
+  --tufte-rule: rgba(17, 17, 17, 0.18);
+  --tufte-rule-strong: rgba(17, 17, 17, 0.34);
+  --tufte-accent: #8f2f1d;
+  --tufte-accent-soft: rgba(143, 47, 29, 0.12);
+  --tufte-code-bg: #f4efe2;
+  --tufte-panel: rgba(255, 255, 248, 0.78);
+  --tufte-shadow: rgba(24, 20, 14, 0.14);
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  --tufte-paper: #242424;
+  --tufte-ink: #efeadc;
+  --tufte-muted: #c8c1b2;
+  --tufte-rule: rgba(239, 234, 220, 0.18);
+  --tufte-rule-strong: rgba(239, 234, 220, 0.34);
+  --tufte-accent: #d59a7f;
+  --tufte-accent-soft: rgba(213, 154, 127, 0.09);
+  --tufte-code-bg: #303030;
+  --tufte-panel: rgba(43, 43, 43, 0.94);
+  --tufte-shadow: transparent;
+  color-scheme: dark;
+}
+
+html {
+  background: var(--tufte-paper);
+}
+
+body {
+  background: transparent;
+  color: var(--tufte-ink);
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+a:link,
+a:visited {
+  color: inherit;
+}
+
+a:link,
+.tufte-underline,
+.hover-tufte-underline:hover {
+  background: linear-gradient(var(--tufte-paper), var(--tufte-paper)), linear-gradient(var(--tufte-paper), var(--tufte-paper)), linear-gradient(currentColor, currentColor);
+  background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+  background-repeat: no-repeat, no-repeat, repeat-x;
+  background-position: 0% 93%, 100% 93%, 0% 93%;
+  text-shadow: 0.03em 0 var(--tufte-paper), -0.03em 0 var(--tufte-paper), 0 0.03em var(--tufte-paper), 0 -0.03em var(--tufte-paper), 0.06em 0 var(--tufte-paper), -0.06em 0 var(--tufte-paper), 0.09em 0 var(--tufte-paper), -0.09em 0 var(--tufte-paper), 0.12em 0 var(--tufte-paper), -0.12em 0 var(--tufte-paper), 0.15em 0 var(--tufte-paper), -0.15em 0 var(--tufte-paper);
+}
+
+hr,
+table,
+.section-comments,
+blockquote footer {
+  border-color: var(--tufte-rule);
+}
+
+h1,
+h2,
+h3,
+.subtitle,
+.byline,
+.sidenote,
+.marginnote,
+figcaption,
+.section-comments,
+.section-comments-title {
+  color: var(--tufte-ink);
+}
+
+.sidenote,
+.marginnote,
+figcaption,
+.byline,
+.section-comments {
+  color: var(--tufte-muted);
+}
+
+code,
+pre > code {
+  background: var(--tufte-code-bg);
+  color: var(--tufte-ink);
+  border-radius: 0.18rem;
+}
+
+code {
+  padding: 0.05rem 0.18rem;
+}
+
+pre > code {
+  padding: 0.8rem 1rem;
+  box-shadow: inset 0 0 0 1px var(--tufte-rule);
+}
+
+div.sourceCode,
+pre:not(.sourceCode) {
+  background: var(--tufte-code-bg);
+}
+
+html[data-theme="dark"] pre code,
+html[data-theme="dark"] code span {
+  color: var(--tufte-ink);
+}
+
+table {
+  border-collapse: collapse;
+}
+
+thead,
+tr:not(:last-child) {
+  border-bottom: 1px solid var(--tufte-rule);
+}
+
+th,
+td {
+  color: var(--tufte-ink);
+}
+
+::selection {
+  background: var(--tufte-accent);
+  color: var(--tufte-paper);
+  text-shadow: none;
+}
+
+.theme-switch {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.35rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--tufte-rule-strong);
+  border-radius: 999px;
+  background: var(--tufte-paper);
+  color: var(--tufte-ink);
+  box-shadow: none;
+  font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+  font-size: 0.92rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.theme-switch:hover,
+.theme-switch:focus-visible {
+  border-color: var(--tufte-accent);
+  outline: none;
+}
+
+.theme-switch__icon {
+  color: var(--tufte-accent);
+  font-size: 1.05rem;
+}
+
 .header-anchor {
   margin-left: 0.3rem;
   font-size: 0.7em;
@@ -70,6 +229,12 @@ h6:hover .header-anchor,
 }
 
 @media (max-width: 760px) {
+  .theme-switch {
+    top: 0.65rem;
+    right: 0.65rem;
+    padding: 0.32rem 0.58rem;
+  }
+
   .section-comments {
     display: block;
     float: left;
