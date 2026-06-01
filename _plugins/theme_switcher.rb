@@ -12,7 +12,8 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |document|
     <script>
       (function () {
         try {
-          var savedTheme = localStorage.getItem("notes-theme");
+          localStorage.removeItem("notes-theme");
+          var savedTheme = localStorage.getItem("notes-theme-mode");
           var hour = new Date().getHours();
           var theme = savedTheme || ((hour >= 19 || hour < 7) ? "dark" : "light");
           document.documentElement.setAttribute("data-theme", theme);
@@ -30,7 +31,7 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |document|
     </button>
     <script>
       (function () {
-        var STORAGE_KEY = "notes-theme";
+        var STORAGE_KEY = "notes-theme-mode";
         var button = document.querySelector(".theme-switch");
         if (!button) return;
 
@@ -46,10 +47,12 @@ Jekyll::Hooks.register [:pages, :posts], :post_render do |document|
 
         function applyTheme(theme, persist) {
           document.documentElement.setAttribute("data-theme", theme);
+          var nextTheme = theme === "dark" ? "light" : "dark";
           button.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
-          button.querySelector(".theme-switch__icon").textContent = theme === "dark" ? "☾" : "☼";
-          button.querySelector(".theme-switch__label").textContent = theme === "dark" ? "Dark" : "Light";
-          button.title = "Switch to " + (theme === "dark" ? "light" : "dark") + " theme";
+          button.setAttribute("aria-label", "Switch to " + nextTheme + " theme");
+          button.querySelector(".theme-switch__icon").textContent = theme === "dark" ? "☼" : "☾";
+          button.querySelector(".theme-switch__label").textContent = theme === "dark" ? "Light" : "Dark";
+          button.title = "Switch to " + nextTheme + " theme";
 
           if (persist) {
             try { localStorage.setItem(STORAGE_KEY, theme); } catch (_error) {}
